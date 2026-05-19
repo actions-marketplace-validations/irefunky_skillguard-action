@@ -1,0 +1,34 @@
+name: 'SkillGuard Security Scanner'
+description: 'Automatically scans SKILL.md files for malicious instructions, data exfiltration patterns, and security vulnerabilities'
+author: 'irefunky'
+
+branding:
+  icon: 'shield'
+  color: 'green'
+
+inputs:
+  github-token:
+    description: 'GitHub token for posting PR comments'
+    required: true
+    default: ${{ github.token }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      shell: bash
+      run: pip install httpx
+
+    - name: Run SkillGuard scan
+      shell: bash
+      run: python3 ${{ github.action_path }}/scan_skills.py
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        REPO: ${{ github.repository }}
+        FILES: ${{ env.CHANGED_FILES }}
