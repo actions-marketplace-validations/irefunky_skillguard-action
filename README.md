@@ -43,7 +43,7 @@ Add this to your repository at `.github/workflows/skillguard.yml`:
             run: echo "CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_ENV
 
           - name: SkillGuard Scan
-            uses: irefunky/skillguard-action@v1
+            uses: skillguard-io/skillguard-action@v1
             with:
               github-token: ${{ secrets.GITHUB_TOKEN }}
 
